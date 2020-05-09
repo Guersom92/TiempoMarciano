@@ -1,0 +1,131 @@
+body{
+    font-family:'Roboto Mono', monospace;
+}
+
+/* Cabecera */
+header{
+    background-color: #CB8560;
+}
+.top-container{
+    display: flex;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    align-items: center;
+    flex-direction: column;
+}
+h1{
+    font-size: 2rem;
+    color: white;
+}
+p{
+    font-weight: 300;
+    font-size: 1rem;
+}
+
+.lado{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    
+}
+#comentario{
+    color: #7C1919;
+    font-size: 0.9rem;
+    font-weight: 400;
+    text-align: center;
+}
+#right{
+    position: absolute;
+    right: 5%;
+    top: 40%;
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 3;
+
+}
+#left{
+    position: absolute;
+    left: 5%;
+    top: 40%;
+    opacity: 0.5;
+    cursor: pointer;
+    z-index: 3;
+
+}
+.box{
+    position: relative;
+    color: white;
+    background-color: #8F5B3F;
+    font-size: 2rem;
+    font-weight: 700;
+    height: 120px;
+    width: 200px;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.soles{
+    display: flex;
+}
+.sol{
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 120px;
+    
+}
+
+/* Sección inferior */
+section{
+    width: 90%;
+    margin: 0 auto;
+    max-width: 900px;
+    text-align: center;
+}
+.mediciones{
+    margin-bottom: 2em;
+   
+}
+h2{
+    font-size: 1.5rem;
+    color: #583623;
+}
+
+
+/* Diseño para Escritorio */
+
+@media(min-width:800px){
+    .mediciones{
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .box{
+        font-size: 3rem;
+        height: 180px;
+        width: 300px;      
+    }
+    .sol{
+        width: 300px;
+        height: 180px;
+    }
+    h1{
+        font-size: 2.5rem;
+    }
+    h2{
+        font-size: 2rem;
+    }
+
+    p{
+        font-size: 1.5rem;
+    }
+    #comentario{
+        font-size: 1rem;
+    }
+
+}
