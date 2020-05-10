@@ -42,9 +42,9 @@ function medidas(objeto,sol){
     mediciones[3].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mn);
     mediciones[4].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.av);
     mediciones[5].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mx);
-    mediciones[6].innerText=parseFloat(objeto[objeto.sol_keys[sol]].HWS.mn.toFixed(2));
-    mediciones[7].innerText=Math.round(objeto[objeto.sol_keys[sol]].HWS.av);
-    mediciones[8].innerText=Math.round(objeto[objeto.sol_keys[sol]].HWS.mx); 
+    mediciones[6].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.mn.toFixed(2));
+    mediciones[7].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.av);
+    mediciones[8].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.mx); 
 
 }
 
@@ -55,6 +55,13 @@ function ftoC(medida){
     const resultado=(medida-32)*5/9
     return Math.round(resultado)
 }
+
+//Transformador de m/s a k/h
+function mtoK(medida){
+    const resultado=medida*3.6
+    return Math.round(resultado)
+}
+
 // Counter
 let contador=1;
 let tamaño=sol_list[0].clientWidth; 
