@@ -1,19 +1,13 @@
 //Declaración y asignación de variables
 const key="OpPuUxDOwbZHZCnQnaYKJRRN4pTcI92ocf3I0jVF";
 const soles=document.querySelector(".soles");
-const sol_list=document.querySelectorAll(".sol");
+const sol_width=document.querySelector(".sol");
 const mediciones=document.querySelectorAll("section span");
 const botónD=document.getElementById("right");
 const botónI=document.getElementById("left");
-const spanPc=document.getElementById("primerclon");
-const span1=document.getElementById("día1");
-const span2=document.getElementById("día2");
-const span3=document.getElementById("día3");
-const span4=document.getElementById("día4");
-const span5=document.getElementById("día5");
-const span6=document.getElementById("día6");
-const span7=document.getElementById("día7");
-const spanLc=document.getElementById("últimoclon");
+const span_sol= document.querySelectorAll(".sol span:nth-child(2)");
+const span_día= document.querySelectorAll(".sol span:nth-child(3)");
+
 let json;
 
 async function petición(){
@@ -21,17 +15,36 @@ async function petición(){
     json= await response.json();
 
     //Slider
-    spanPc.innerText= json.sol_keys[6];
-    span1.innerText= json.sol_keys[0];
-    span2.innerText= json.sol_keys[1];
-    span3.innerText= json.sol_keys[2];
-    span4.innerText= json.sol_keys[3];
-    span5.innerText= json.sol_keys[4];
-    span6.innerText= json.sol_keys[5];
-    span7.innerText= json.sol_keys[6];
-    spanLc.innerText= json.sol_keys[0];
+    span_sol[0].innerText= json.sol_keys[6];
+    span_día[0].innerText= fecha(new Date(json[json.sol_keys[6]].First_UTC));
+    span_sol[1].innerText= json.sol_keys[0];
+    span_día[1].innerText= fecha(new Date(json[json.sol_keys[0]].First_UTC));
+    span_sol[2].innerText= json.sol_keys[1];
+    span_día[2].innerText= fecha(new Date(json[json.sol_keys[1]].First_UTC));
+    span_sol[3].innerText= json.sol_keys[2];
+    span_día[3].innerText= fecha(new Date(json[json.sol_keys[2]].First_UTC));
+    span_sol[4].innerText= json.sol_keys[3];
+    span_día[4].innerText= fecha(new Date(json[json.sol_keys[3]].First_UTC));
+    span_sol[5].innerText= json.sol_keys[4];
+    span_día[5].innerText= fecha(new Date(json[json.sol_keys[4]].First_UTC));
+    span_sol[6].innerText= json.sol_keys[5];
+    span_día[6].innerText= fecha(new Date(json[json.sol_keys[5]].First_UTC));
+    span_sol[7].innerText= json.sol_keys[6];
+    span_día[7].innerText= fecha(new Date(json[json.sol_keys[6]].First_UTC));
+    span_sol[8].innerText= json.sol_keys[0];
+    span_día[8].innerText= fecha(new Date(json[json.sol_keys[0]].First_UTC));
+
 
     medidas(json,0);
+}
+//Función de fecha
+function fecha(fecha){
+    return fecha.toLocaleDateString(
+        undefined,{
+            day:"numeric", month: "long"
+        }
+    )
+
 }
 
 //Función para cambiar las mediciones
@@ -42,7 +55,7 @@ function medidas(objeto,sol){
     mediciones[3].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mn);
     mediciones[4].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.av);
     mediciones[5].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mx);
-    mediciones[6].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.mn.toFixed(2));
+    mediciones[6].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.mn);
     mediciones[7].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.av);
     mediciones[8].innerText=mtoK(objeto[objeto.sol_keys[sol]].HWS.mx); 
 
@@ -58,7 +71,7 @@ function mtoK(medida){
 
 // Counter
 let contador=1;
-let tamaño=sol_list[0].clientWidth; 
+let tamaño=sol_width.clientWidth; 
 soles.style.transform=`translateX(${-tamaño*contador}px)`;
 
 //Arreglando el problema del cambio de tamaño
@@ -68,14 +81,14 @@ window.addEventListener('resize',()=>{
     redimensionar= setTimeout(redimensiónTerminada,200);
 });
 function redimensiónTerminada(){
-    tamaño=sol_list[0].clientWidth;
+    tamaño=sol_width.clientWidth;
     soles.style.transform=`translateX(${-tamaño*contador}px)`;
 }
 
 // Escuchadores de botones
 botónD.addEventListener('click',()=>{
     if(contador>=8) return;
-    tamaño=sol_list[0].clientWidth; 
+    tamaño=sol_width.clientWidth; 
     soles.style.transition= "transform 0.4s ease-in-out";
     contador++;
     soles.style.transform=`translateX(${-tamaño*contador}px)`;
@@ -85,7 +98,7 @@ botónD.addEventListener('click',()=>{
 })
 botónI.addEventListener('click',()=>{
     if(contador<=0) return;
-    tamaño=sol_list[0].clientWidth; 
+    tamaño=sol_width.clientWidth; 
     soles.style.transition= "transform 0.4s ease-in-out";
     contador--;
     soles.style.transform=`translateX(${-tamaño*contador}px)`;
