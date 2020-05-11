@@ -36,9 +36,9 @@ async function petición(){
 
 //Función para cambiar las mediciones
 function medidas(objeto,sol){
-    mediciones[0].innerText=ftoC(objeto[objeto.sol_keys[sol]].AT.mn);
-    mediciones[1].innerText=ftoC(objeto[objeto.sol_keys[sol]].AT.av);
-    mediciones[2].innerText=ftoC(objeto[objeto.sol_keys[sol]].AT.mx);
+    mediciones[0].innerText=Math.round(objeto[objeto.sol_keys[sol]].AT.mn);
+    mediciones[1].innerText=Math.round(objeto[objeto.sol_keys[sol]].AT.av);
+    mediciones[2].innerText=Math.round(objeto[objeto.sol_keys[sol]].AT.mx);
     mediciones[3].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mn);
     mediciones[4].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.av);
     mediciones[5].innerText=Math.round(objeto[objeto.sol_keys[sol]].PRE.mx);
@@ -50,12 +50,6 @@ function medidas(objeto,sol){
 
 petición();
   
-//Transformador de Fahrenheit a Celsius
-function ftoC(medida){
-    const resultado=(medida-32)*5/9
-    return Math.round(resultado)
-}
-
 //Transformador de m/s a k/h
 function mtoK(medida){
     const resultado=medida*3.6
