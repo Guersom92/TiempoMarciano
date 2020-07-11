@@ -65,10 +65,13 @@ p{
     width: 200px;
     border-radius: 0.5rem;
     overflow: hidden;
+   
 }
 
 .soles{
+
     display: flex;
+    transition: transform 250ms ease-in;
 }
 .sol{
     flex-shrink: 0;
@@ -92,6 +95,9 @@ a{
 }
 a:hover{
     color: rgb(211, 60, 60);
+}
+.oculto{
+    display: none;
 }
 /* Sección inferior */
 section{
