@@ -60,6 +60,14 @@ function ocultarFlechas(keys) {
         flechaDerecha.classList.remove("oculto");
     }
 }
+//Función de manejo de evento de flechas
+function manejadorEventoDeFlechas(number,datos,keys){
+    if(índiceActual+number<0||índiceActual+number>keys.length-1)return
+    índiceActual=índiceActual+number;
+    esablecerDatos(índiceActual,datos);
+    desplazamientoDeContenedor();
+    ocultarFlechas(keys);
+}
 
 //Función de llamada al API
 async function petición(){
@@ -82,18 +90,18 @@ async function petición(){
     esablecerDatos(índiceActual,newData);
 
     flechaDerecha.addEventListener("click",(e)=>{
-        índiceActual++;
-        esablecerDatos(índiceActual,newData);
-        desplazamientoDeContenedor();
-        ocultarFlechas(sol_keys);
+        manejadorEventoDeFlechas(1,newData,sol_keys);
     });
 
     flechaIzquierda.addEventListener("click",(e)=>{
-        índiceActual--;
-        esablecerDatos(índiceActual,newData);
-        desplazamientoDeContenedor();
-        ocultarFlechas(sol_keys);
+        manejadorEventoDeFlechas(-1,newData,sol_keys);
     });
+
+    document.addEventListener("keydown",(e)=>{
+        if(e.key!="ArrowLeft" && e.key!="ArrowRight")return 
+        if(e.key==="ArrowLeft")manejadorEventoDeFlechas(-1,newData,sol_keys);
+        if(e.key==="ArrowRight")manejadorEventoDeFlechas(1,newData,sol_keys);
+    })
 
 }    
     
