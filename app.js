@@ -35,6 +35,7 @@ function modificadorSoles([sol,data]){
 }
 //Función de establecer datos
 function esablecerDatos(índice,newData){
+    if(newData)return;
     mediciones[0].innerHTML=newData[índice].tMin;
     mediciones[1].innerHTML=newData[índice].tMed;
     mediciones[2].innerHTML=newData[índice].tMax;
@@ -75,15 +76,23 @@ async function petición(){
     json= await response.json();
     let {sol_keys,validity_checks,...solData} =json;
     const newData=Object.entries(solData).map(modificadorSoles);
-
-    for(d of sol_keys){
-        let fecha = new Date(json[d].First_UTC);
-        const fechaFormateada=cambiarFormato(fecha);
+    if(sol_keys.lenght>0){
+        for(d of sol_keys){
+            let fecha = new Date(json[d].First_UTC);
+            const fechaFormateada=cambiarFormato(fecha);
+            solesContenedor.innerHTML+=`
+            <div class="sol">
+                <div>Sol</div>
+                <span class="día" >${d}</span>
+                <span class="fecha">${fechaFormateada}</span>
+            </div>`;
+        }
+    }
+    else{
+        flechaDerecha.classList.add("oculto");
         solesContenedor.innerHTML+=`
         <div class="sol">
-            <div>Sol</div>
-            <span class="día" >${d}</span>
-            <span class="fecha">${fechaFormateada}</span>
+            no data
         </div>`;
     }
 
