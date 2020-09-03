@@ -34,8 +34,8 @@ function modificadorSoles([sol,data]){
         
 }
 //Función de establecer datos
-function esablecerDatos(índice,newData){
-    if(newData)return;
+function establecerDatos(índice,newData){
+    if(newData.length<=0)return;
     mediciones[0].innerHTML=newData[índice].tMin;
     mediciones[1].innerHTML=newData[índice].tMed;
     mediciones[2].innerHTML=newData[índice].tMax;
@@ -65,52 +65,59 @@ function ocultarFlechas(keys) {
 function manejadorEventoDeFlechas(number,datos,keys){
     if(índiceActual+number<0||índiceActual+number>keys.length-1)return
     índiceActual=índiceActual+number;
-    esablecerDatos(índiceActual,datos);
+    establecerDatos(índiceActual,datos);
     desplazamientoDeContenedor();
     ocultarFlechas(keys);
 }
 
 //Función de llamada al API
 async function petición(){
-    const response = await fetch(`https://api.nasa.gov/insight_weather/?api_key=${key}&feedtype=json&ver=1.0`)
-    json= await response.json();
-    let {sol_keys,validity_checks,...solData} =json;
-    const newData=Object.entries(solData).map(modificadorSoles);
-    if(sol_keys.lenght>0){
-        for(d of sol_keys){
-            let fecha = new Date(json[d].First_UTC);
-            const fechaFormateada=cambiarFormato(fecha);
+    try{
+        const response = await fetch(`https://api.nasa.gov/insight_weather/?api_key=${key}&feedtype=json&ver=1.0`)
+        json= await response.json();
+        let {sol_keys,validity_checks,...solData} =json;
+        const newData=Object.entries(solData).map(modificadorSoles);
+        if(sol_keys.length>0){
+            for(d of sol_keys){
+                let fecha = new Date(json[d].First_UTC);
+                const fechaFormateada=cambiarFormato(fecha);
+                solesContenedor.innerHTML+=`
+                <div class="sol">
+                    <div>Sol</div>
+                    <span class="día" >${d}</span>
+                    <span class="fecha">${fechaFormateada}</span>
+                </div>`;
+            }
+        }
+        else{
+            flechaDerecha.classList.add("oculto");
             solesContenedor.innerHTML+=`
             <div class="sol">
-                <div>Sol</div>
-                <span class="día" >${d}</span>
-                <span class="fecha">${fechaFormateada}</span>
+                no data
             </div>`;
         }
-    }
-    else{
+        establecerDatos(índiceActual,newData);
+
+        flechaDerecha.addEventListener("click",(e)=>{
+            manejadorEventoDeFlechas(1,newData,sol_keys);
+        });
+
+        flechaIzquierda.addEventListener("click",(e)=>{
+            manejadorEventoDeFlechas(-1,newData,sol_keys);
+        });
+
+        document.addEventListener("keydown",(e)=>{
+            if(e.key!="ArrowLeft" && e.key!="ArrowRight")return 
+            if(e.key==="ArrowLeft")manejadorEventoDeFlechas(-1,newData,sol_keys);
+            if(e.key==="ArrowRight")manejadorEventoDeFlechas(1,newData,sol_keys);
+        })
+    }catch{
         flechaDerecha.classList.add("oculto");
-        solesContenedor.innerHTML+=`
-        <div class="sol">
-            no data
-        </div>`;
+            solesContenedor.innerHTML+=`
+            <div class="sol">
+                no data
+            </div>`;
     }
-
-    esablecerDatos(índiceActual,newData);
-
-    flechaDerecha.addEventListener("click",(e)=>{
-        manejadorEventoDeFlechas(1,newData,sol_keys);
-    });
-
-    flechaIzquierda.addEventListener("click",(e)=>{
-        manejadorEventoDeFlechas(-1,newData,sol_keys);
-    });
-
-    document.addEventListener("keydown",(e)=>{
-        if(e.key!="ArrowLeft" && e.key!="ArrowRight")return 
-        if(e.key==="ArrowLeft")manejadorEventoDeFlechas(-1,newData,sol_keys);
-        if(e.key==="ArrowRight")manejadorEventoDeFlechas(1,newData,sol_keys);
-    })
 
 }    
     
