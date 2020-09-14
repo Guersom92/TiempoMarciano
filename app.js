@@ -19,32 +19,44 @@ function mtoK(medida){
 }
 //Modificador de datos
 function modificadorSoles([sol,data]){
+    let temperatura,presión,viento;
+    if(data.hasOwnProperty("AT")){
+        temperatura={
+            tMin:Math.round(data.AT.mn),
+            tMed:Math.round(data.AT.av),
+            tMax:Math.round(data.AT.mx)}
+    }
+    if(data.hasOwnProperty("PRE")){
+        presión={
+            pMin:Math.round(data.PRE.mn),
+            pMed:Math.round(data.PRE.av),
+            pMax:Math.round(data.PRE.mx)
+        }
+    }
+    if(data.hasOwnProperty("HWS")){
+        viento={
+            vMin:mtoK(data.HWS.mn),
+            vMed:mtoK(data.HWS.av),
+            vMax:mtoK(data.HWS.mx)
+        }
+    }
     return{
-        tMin:Math.round(data.AT.mn),
-        tMed:Math.round(data.AT.av),
-        tMax:Math.round(data.AT.mx),
-        pMin:Math.round(data.PRE.mn),
-        pMed:Math.round(data.PRE.av),
-        pMax:Math.round(data.PRE.mx),
-        vMin:mtoK(data.HWS.mn),
-        vMed:mtoK(data.HWS.av),
-        vMax:mtoK(data.HWS.mx)
-        
+        ...temperatura,...presión,...viento
     }
         
 }
 //Función de establecer datos
 function establecerDatos(índice,newData){
     if(newData.length<=0)return;
-    mediciones[0].innerHTML=newData[índice].tMin;
-    mediciones[1].innerHTML=newData[índice].tMed;
-    mediciones[2].innerHTML=newData[índice].tMax;
-    mediciones[3].innerHTML=newData[índice].pMin;
-    mediciones[4].innerHTML=newData[índice].pMed;
-    mediciones[5].innerHTML=newData[índice].pMax;
-    mediciones[6].innerHTML=newData[índice].vMin;
-    mediciones[7].innerHTML=newData[índice].vMed;
-    mediciones[8].innerHTML=newData[índice].vMax;
+    mediciones[0].innerHTML=newData[índice].tMin?newData[índice].tMin+"°C":"n/a";
+    mediciones[1].innerHTML=newData[índice].tMed?newData[índice].tMed+"°C":"n/a";
+    mediciones[2].innerHTML=newData[índice].tMax?newData[índice].tMax+"°C":"n/a";
+    mediciones[3].innerHTML=newData[índice].pMin?newData[índice].pMin+" Pa":"n/a";
+    mediciones[4].innerHTML=newData[índice].pMed?newData[índice].pMed+" Pa":"n/a";
+    mediciones[5].innerHTML=newData[índice].pMax?newData[índice].pMax+" Pa":"n/a";
+    mediciones[6].innerHTML=newData[índice].vMin?newData[índice].vMin+" k/h":"n/a";
+    mediciones[7].innerHTML=newData[índice].vMed?newData[índice].vMed+" k/h":"n/a";
+    mediciones[8].innerHTML=newData[índice].vMax?newData[índice].vMax+" k/h":"n/a";
 }
 
 //Función de dezplazamiento
@@ -111,7 +123,8 @@ async function petición(){
             if(e.key==="ArrowLeft")manejadorEventoDeFlechas(-1,newData,sol_keys);
             if(e.key==="ArrowRight")manejadorEventoDeFlechas(1,newData,sol_keys);
         })
-    }catch{
+    }catch(e){
+        console.log(e);
         flechaDerecha.classList.add("oculto");
             solesContenedor.innerHTML+=`
             <div class="sol">
